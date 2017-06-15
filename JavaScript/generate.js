@@ -218,7 +218,7 @@ function generateCMDBvalues(inputLines, outputFile) {
                 if (!startsWithHyphen) {
                     hParamText = ltrim(lineText.substring(0,firstColon));
                 } else {
-                    hParamText = hAddress[hAddress.length-1].substring(0,hAddress[hAddress.length-1].length);
+                    hParamText = hAddress[hAddress.length-1].substring(0,hAddress[hAddress.length-1].length - 1);
                 }
 
                 if ((hParamText.substring(0,1) == "'" && hParamText.substring(hParamText.length - 1) == "'")||(hParamText.substring(0,1) == '"' && hParamText.substring(hParamText.length - 1) == '"')){
@@ -425,7 +425,7 @@ function generateCMDBvaluesMulti(outputFile) {
                 if (!startsWithHyphen) {
                     hParamText = ltrim(lineText.substring(0,firstColon));
                 } else {
-                    hParamText = hAddress[hAddress.length-1].substring(0,hAddress[hAddress.length-1].length);
+                    hParamText = hAddress[hAddress.length-1].substring(0,hAddress[hAddress.length-1].length -1);
                 }
 
                 if ((hParamText.substring(0,1) == "'" && hParamText.substring(hParamText.length - 1) == "'")||(hParamText.substring(0,1) == '"' && hParamText.substring(hParamText.length - 1) == '"')){

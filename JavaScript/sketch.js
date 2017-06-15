@@ -5,8 +5,9 @@ var startRow = 1;
 var debug = false;
 var indentedArrays = true;
 
-var serverAddress = 'http://gbrpmscdbt02.corp.internal:8081';
-//var serverAddress = 'http://centd643512w5q:8080';
+var serverAddress = 'http://gbrpmscdbt02.corp.internal:8081'; //Gary CMDB
+//var serverAddress = 'http://centd643512w5q:8080'; //Dev CMDB
+//var serverAddress = 'http://gbrpmscdbt02.corp.internal:8082'; //TSFN Sandbox
 
 var singleFile, mainFile, envFile, intFile, relFile;
 var multiFiles;
