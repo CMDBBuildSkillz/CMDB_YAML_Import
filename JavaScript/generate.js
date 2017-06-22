@@ -3,13 +3,14 @@ var outputReleaseJSON = [];
 var outputGlobalJSON = [];
 var outputJSON = [];
 
-function OutputGenericConfigLine(origText, addressText, paramText, valueText, noteText, configType){
+function OutputGenericConfigLine(origText, addressText, paramText, valueText, noteText, configType, isArrayItem){
     this.origText = origText;
     this.addressText = addressText;
     this.paramText = paramText;
     this.valueText = JSON.stringify(valueText);
     this.noteText = noteText;
     this.configType = configType;
+    this.isArrayItem = isArrayItem;
     
 
     if (addressText.indexOf('{ENVID}') >= 0||paramText.indexOf('{ENVID}')>=0||valueText.indexOf('{ENVID}')>=0){
@@ -31,12 +32,13 @@ function OutputGenericConfigLine(origText, addressText, paramText, valueText, no
 
 }
 
-function OutputReleaseConfigLine(origText, addressText, paramText, valueText, noteText){
+function OutputReleaseConfigLine(origText, addressText, paramText, valueText, noteText, isArrayItem){
     this.origText = origText;
     this.addressText = addressText;
     this.paramText =paramText;
     this.valueText = valueText;
     this.noteText = noteText;
+    this.isArrayItem = isArrayItem;
 
     if (addressText.indexOf('{ENVID}') >= 0||paramText.indexOf('{ENVID}')>=0){
         this.recurseByEnv = true;
@@ -47,12 +49,13 @@ function OutputReleaseConfigLine(origText, addressText, paramText, valueText, no
 
 }
 
-function OutputGlobalConfigLine(origText, addressText, paramText, valueText, noteText){
+function OutputGlobalConfigLine(origText, addressText, paramText, valueText, noteText, isArrayItem){
     this.origText = origText;
     this.addressText = addressText;
     this.paramText =paramText;
     this.valueText = valueText;
     this.noteText = noteText;
+    this.isArrayItem = isArrayItem;
 
     if (addressText.indexOf('{ENVID}') >= 0||paramText.indexOf('{ENVID}')>=0){
         this.recurseByEnv = true;
@@ -215,7 +218,7 @@ function generateCMDBvalues(inputLines, outputFile) {
                 if (!startsWithHyphen) {
                     hParamText = ltrim(lineText.substring(0,firstColon));
                 } else {
-                    hParamText = hAddress[hAddress.length-1].substring(0,hAddress[hAddress.length-1].length);
+                    hParamText = hAddress[hAddress.length-1].substring(0,hAddress[hAddress.length-1].length - 1);
                 }
 
                 if ((hParamText.substring(0,1) == "'" && hParamText.substring(hParamText.length - 1) == "'")||(hParamText.substring(0,1) == '"' && hParamText.substring(hParamText.length - 1) == '"')){
@@ -268,16 +271,16 @@ function generateCMDBvalues(inputLines, outputFile) {
 
                 if(!lineIsGlobal){
                     //outputReleaseJSON.push(new OutputReleaseConfigLine(lineText,hAddressText,hParamText,hValueText,hNoteText ));
-                    outputJSON.push(new OutputGenericConfigLine(lineText,hAddressText,hParamText,hValueText,hNoteText,'Release'));
+                    outputJSON.push(new OutputGenericConfigLine(lineText,hAddressText,hParamText,hValueText,hNoteText,'Release', startsWithHyphen));
                 } else {
                     if(incGlobal){
                         // as release or global section? //overwrite or 
                         if(globalInGlobal){
                             //outputGlobalJSON.push(new OutputGlobalConfigLine(lineText,hAddressText,hParamText,hValueText,hNoteText ));
-                            outputJSON.push(new OutputGenericConfigLine(lineText,hAddressText,hParamText,hValueText,hNoteText,'Global' ));
+                            outputJSON.push(new OutputGenericConfigLine(lineText,hAddressText,hParamText,hValueText,hNoteText,'Global', startsWithHyphen));
                         } else {
                             //outputReleaseJSON.push(new OutputReleaseConfigLine(lineText,hAddressText,hParamText,hValueText,hNoteText));
-                            outputJSON.push(new OutputGenericConfigLine(lineText,hAddressText,hParamText,hValueText,hNoteText,'Release' ));
+                            outputJSON.push(new OutputGenericConfigLine(lineText,hAddressText,hParamText,hValueText,hNoteText,'Release', startsWithHyphen));
                         }
                     } else {
                         //not doing anything if we arne't including them                        
@@ -422,7 +425,7 @@ function generateCMDBvaluesMulti(outputFile) {
                 if (!startsWithHyphen) {
                     hParamText = ltrim(lineText.substring(0,firstColon));
                 } else {
-                    hParamText = hAddress[hAddress.length-1].substring(0,hAddress[hAddress.length-1].length);
+                    hParamText = hAddress[hAddress.length-1].substring(0,hAddress[hAddress.length-1].length -1);
                 }
 
                 if ((hParamText.substring(0,1) == "'" && hParamText.substring(hParamText.length - 1) == "'")||(hParamText.substring(0,1) == '"' && hParamText.substring(hParamText.length - 1) == '"')){
@@ -469,7 +472,7 @@ function generateCMDBvaluesMulti(outputFile) {
                 //hValueText = JSON.stringify(hValueText);
 
                 if(incGlobal || finishedGlobals){
-                    outputReleaseJSON.push(new OutputReleaseConfigLine(lineText,hAddressText,hParamText,hValueText,hNoteText ));
+                    outputReleaseJSON.push(new OutputReleaseConfigLine(lineText,hAddressText,hParamText,hValueText,hNoteText, startsWithHyphen ));
                 }
             }
 

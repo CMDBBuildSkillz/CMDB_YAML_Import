@@ -221,7 +221,7 @@ function writeReleaseData(){
     for(var configLine of outputReleaseJSON){
       if(!overWriting){
         //put without checking = append
-        putData = '{"parameter":"'+configLine.paramText +'", "value":'+configLine.valueText +', "hieraAddress":"'+configLine.addressText +'", "recursiveByEnv":"'+ configLine.recurseByEnv +'", "recursiveBySubEnv":"'+ configLine.recurseBySubEnv +'", "notes":"'+configLine.noteText +'", "sensitive":"'+ configLine.sensitive +'", "release":{"id":"'+ thisReleaseID +'"}}'
+        putData = '{"parameter":"'+configLine.paramText +'", "value":'+configLine.valueText +', "hieraAddress":"'+configLine.addressText +'", "recursiveByEnv":"'+ configLine.recurseByEnv +'", "recursiveBySubEnv":"'+ configLine.recurseBySubEnv +'", "notes":"'+configLine.noteText +'", "sensitive":"'+ configLine.sensitive +'", "arrayItem":"' + configLine.isArrayItem + '", "release":{"id":"'+ thisReleaseID +'"}}'
         putRequest(appendedReleaseConfig, serverAddress + '/api/releaseConfigs/', putData,tokenJSON.token,relDataError);
       } else {
         //overwrite = query by example, if exists get ID & put with ID else put without id (as-is);
@@ -232,7 +232,7 @@ function writeReleaseData(){
     for(var configLine of outputGlobalJSON){
       if(!globalOverwrite){
         //put without checking = append
-        putData = '{"parameter":"'+configLine.paramText +'", "value":'+configLine.valueText +', "hieraAddress":"'+configLine.addressText +'", "recursiveByEnv":"'+ configLine.recurseByEnv +'", "recursiveBySubEnv":"'+ configLine.recurseBySubEnv +'", "recursiveByRel":"'+ configLine.recurseByRel +'", "notes":"'+configLine.noteText +'", "sensitive":"'+ configLine.sensitive +'"}'
+        putData = '{"parameter":"'+configLine.paramText +'", "value":'+configLine.valueText +', "hieraAddress":"'+configLine.addressText +'", "recursiveByEnv":"'+ configLine.recurseByEnv +'", "recursiveBySubEnv":"'+ configLine.recurseBySubEnv +'", "recursiveByRel":"'+ configLine.recurseByRel +'", "notes":"'+configLine.noteText +'", "sensitive":"'+ configLine.sensitive + '", "arrayItem":"' + configLine.isArrayItem +'"}'
         putRequest(appendedGlobalConfig, serverAddress + '/api/globalconfigs/', putData,tokenJSON.token,relDataError);
       } else {
         //overwrite = query by example, if exists get ID & put with ID else put without id (as-is);
@@ -243,11 +243,11 @@ function writeReleaseData(){
       if(!globalOverwrite){
         //put without checking = append
         if (configLine.configType == 'Global') {
-          putData = '{"parameter":"'+configLine.paramText +'", "value":'+configLine.valueText +', "hieraAddress":"'+configLine.addressText +'", "recursiveByEnv":"'+ configLine.recurseByEnv +'", "recursiveBySubEnv":"'+ configLine.recurseBySubEnv +'", "recursiveByRel":"'+ configLine.recurseByRel +'", "notes":"'+configLine.noteText +'", "sensitive":"'+ configLine.sensitive +'"}'
+          putData = '{"parameter":"'+configLine.paramText +'", "value":'+configLine.valueText +', "hieraAddress":"'+configLine.addressText +'", "recursiveByEnv":"'+ configLine.recurseByEnv +'", "recursiveBySubEnv":"'+ configLine.recurseBySubEnv +'", "recursiveByRel":"'+ configLine.recurseByRel +'", "notes":"'+configLine.noteText +'", "sensitive":"'+ configLine.sensitive + '", "arrayItem":"' + configLine.isArrayItem +'"}'
           putRequest(appendedGlobalConfig, serverAddress + '/api/globalconfigs/', putData,tokenJSON.token,relDataError);
         }
         else if (configLine.configType == 'Release'){
-          putData = '{"parameter":"'+configLine.paramText +'", "value":'+configLine.valueText +', "hieraAddress":"'+configLine.addressText +'", "recursiveByEnv":"'+ configLine.recurseByEnv +'", "recursiveBySubEnv":"'+ configLine.recurseBySubEnv +'", "notes":"'+configLine.noteText +'", "sensitive":"'+ configLine.sensitive +'", "release":{"id":"'+ thisReleaseID +'"}}'
+          putData = '{"parameter":"'+configLine.paramText +'", "value":'+configLine.valueText +', "hieraAddress":"'+configLine.addressText +'", "recursiveByEnv":"'+ configLine.recurseByEnv +'", "recursiveBySubEnv":"'+ configLine.recurseBySubEnv +'", "notes":"'+configLine.noteText +'", "sensitive":"'+ configLine.sensitive + '", "arrayItem":"' + configLine.isArrayItem + '", "release":{"id":"'+ thisReleaseID +'"}}'
           putRequest(appendedReleaseConfig, serverAddress + '/api/releaseConfigs/', putData,tokenJSON.token,relDataError);
         } else {
           //other config types here

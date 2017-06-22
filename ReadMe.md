@@ -1,3 +1,5 @@
+Pre-Req: Latest p5js release to be installed in libraries folder - p5.dom.js (mand) , p5.js (mand) and p5.sound.js (optional)
+
 AIM: to read all files and dynamically pull the right values from the supporting files. - FAIL
 AIM: to add global inclusion as a user option. - DONE - appends only
 AIM: Remove trailing : or :- from all config addresse in the DB. - DONE
@@ -22,3 +24,4 @@ Append to Release regardless
 Overwrite at release (if match then update, if no match then add)
 Append to global regardless
 overwrite at global (if match then update, if no match then add)
+
