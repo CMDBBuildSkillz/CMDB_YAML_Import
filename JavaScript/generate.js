@@ -3,6 +3,23 @@ var outputReleaseJSON = [];
 var outputGlobalJSON = [];
 var outputJSON = [];
 
+function Recurse(by, type, address, param, value){
+    if (by=='ENV'){
+        if (address.indexOf('{ENVID}') >= 0||param.indexOf('{ENVID}')>=0||value.indexOf('{ENVID}')>=0||address.indexOf('<ENVID>') >= 0||param.indexOf('<ENVID>')>=0||value.indexOf('<ENVID>')>=0||address.indexOf('[ENVID]') >= 0||param.indexOf('[ENVID]')>=0||value.indexOf('[ENVID]')>=0){
+            return true;
+        } else {
+            return false;
+        }
+    } else if (by=='REL'){
+        if (type=='Global'&& (address.indexOf('{Release}') >= 0||param.indexOf('{Release}')>=0||value.indexOf('{Release}')>=0||address.indexOf('<Release>') >= 0||param.indexOf('<Release>')>=0||value.indexOf('<Release>')>=0||address.indexOf('[Release]') >= 0||param.indexOf('[Release]')>=0||value.indexOf('[Release]')>=0)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+
 function OutputGenericConfigLine(origText, addressText, paramText, valueText, noteText, configType, isArrayItem){
     this.origText = origText;
     this.addressText = addressText;
@@ -13,17 +30,19 @@ function OutputGenericConfigLine(origText, addressText, paramText, valueText, no
     this.isArrayItem = isArrayItem;
     
 
-    if (addressText.indexOf('{ENVID}') >= 0||paramText.indexOf('{ENVID}')>=0||valueText.indexOf('{ENVID}')>=0){
-        this.recurseByEnv = true;
-    } else {
-        this.recurseByEnv = false;
-    }
+    // if (addressText.indexOf('{ENVID}') >= 0||paramText.indexOf('{ENVID}')>=0||valueText.indexOf('{ENVID}')>=0){
+    //     this.recurseByEnv = true;
+    // } else {
+    //     this.recurseByEnv = false;
+    // }
+    this.recurseByEnv = Recurse('ENV',configType,addressText,paramText,valueText);
     this.recurseBySubEnv = false;
-    if (configType=='Global'&& (addressText.indexOf('{Release}') >= 0||paramText.indexOf('{Release}')>=0||valueText.indexOf('{Release}')>=0)){
-        this.recurseByRel = true;
-    } else {
-        this.recurseByRel = false;
-    }
+    this.recurseByRel = Recurse('REL',configType,addressText,paramText,valueText);
+    // if (configType=='Global'&& (addressText.indexOf('{Release}') >= 0||paramText.indexOf('{Release}')>=0||valueText.indexOf('{Release}')>=0)){
+    //     this.recurseByRel = true;
+    // } else {
+    //     this.recurseByRel = false;
+    // }
     if (addressText.indexOf('{SENSITIVE}') >= 0||paramText.indexOf('{SENSITIVE}')>=0||valueText.indexOf('{SENSITIVE}')>=0){
         this.sensitive = true;
     } else {
@@ -32,44 +51,44 @@ function OutputGenericConfigLine(origText, addressText, paramText, valueText, no
 
 }
 
-function OutputReleaseConfigLine(origText, addressText, paramText, valueText, noteText, isArrayItem){
-    this.origText = origText;
-    this.addressText = addressText;
-    this.paramText =paramText;
-    this.valueText = valueText;
-    this.noteText = noteText;
-    this.isArrayItem = isArrayItem;
+// function OutputReleaseConfigLine(origText, addressText, paramText, valueText, noteText, isArrayItem){
+//     this.origText = origText;
+//     this.addressText = addressText;
+//     this.paramText =paramText;
+//     this.valueText = valueText;
+//     this.noteText = noteText;
+//     this.isArrayItem = isArrayItem;
 
-    if (addressText.indexOf('{ENVID}') >= 0||paramText.indexOf('{ENVID}')>=0){
-        this.recurseByEnv = true;
-    } else {
-        this.recurseByEnv = false;
-    }
-    this.recurseBySubEnv = false;
+//     if (addressText.indexOf('{ENVID}') >= 0||paramText.indexOf('{ENVID}')>=0){
+//         this.recurseByEnv = true;
+//     } else {
+//         this.recurseByEnv = false;
+//     }
+//     this.recurseBySubEnv = false;
 
-}
+// }
 
-function OutputGlobalConfigLine(origText, addressText, paramText, valueText, noteText, isArrayItem){
-    this.origText = origText;
-    this.addressText = addressText;
-    this.paramText =paramText;
-    this.valueText = valueText;
-    this.noteText = noteText;
-    this.isArrayItem = isArrayItem;
+// function OutputGlobalConfigLine(origText, addressText, paramText, valueText, noteText, isArrayItem){
+//     this.origText = origText;
+//     this.addressText = addressText;
+//     this.paramText =paramText;
+//     this.valueText = valueText;
+//     this.noteText = noteText;
+//     this.isArrayItem = isArrayItem;
 
-    if (addressText.indexOf('{ENVID}') >= 0||paramText.indexOf('{ENVID}')>=0){
-        this.recurseByEnv = true;
-    } else {
-        this.recurseByEnv = false;
-    }
-    this.recurseBySubEnv = false;
-    if (addressText.indexOf('{Release}') >= 0||paramText.indexOf('{Release}')>=0){
-        this.recurseByRel = true;
-    } else {
-        this.recurseByRel = false;
-    }
+//     if (addressText.indexOf('{ENVID}') >= 0||paramText.indexOf('{ENVID}')>=0){
+//         this.recurseByEnv = true;
+//     } else {
+//         this.recurseByEnv = false;
+//     }
+//     this.recurseBySubEnv = false;
+//     if (addressText.indexOf('{Release}') >= 0||paramText.indexOf('{Release}')>=0){
+//         this.recurseByRel = true;
+//     } else {
+//         this.recurseByRel = false;
+//     }
 
-}
+// }
 
 function getFirstHash(inputText){
     var hashIndex;
