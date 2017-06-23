@@ -7,6 +7,8 @@ function Flags(flagType, configType, address, param, value){
     if (flagType=='ENV'){
         if (address.indexOf('{ENVID}') >= 0||param.indexOf('{ENVID}')>=0||value.indexOf('{ENVID}')>=0||address.indexOf('<ENVID>') >= 0||param.indexOf('<ENVID>')>=0||value.indexOf('<ENVID>')>=0||address.indexOf('[ENVID]') >= 0||param.indexOf('[ENVID]')>=0||value.indexOf('[ENVID]')>=0){
             return true;
+        } else if (address.indexOf('{EnvName}') >= 0||param.indexOf('{EnvName}')>=0||value.indexOf('{EnvName}')>=0||address.indexOf('<EnvName>') >= 0||param.indexOf('<EnvName>')>=0||value.indexOf('<EnvName>')>=0||address.indexOf('[EnvName]') >= 0||param.indexOf('[EnvName]')>=0||value.indexOf('[EnvName]')>=0){
+            return true;
         } else {
             return false;
         }
